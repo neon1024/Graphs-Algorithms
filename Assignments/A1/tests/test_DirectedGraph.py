@@ -12,7 +12,7 @@ class TestDirectedGraph(unittest.TestCase):
         pass
 
     def read_first_file_format(self):
-        FILE_NAME = "first_format.txt"
+        FILE_NAME = "../first_format.txt"
         NUMBER_OF_VERTICES = 0
         NUMBER_OF_EDGES = 1
         ORIGIN = 0
