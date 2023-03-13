@@ -1,6 +1,6 @@
 import unittest
 
-from domain.DirectedGraph import DirectedGraph
+from Assignments.A1.domain.DirectedGraph import DirectedGraph
 
 
 class TestDirectedGraph(unittest.TestCase):
