@@ -1,3 +1,5 @@
+import copy
+
 from Assignments.A1.presentation.console import Console
 from Assignments.A1.repository.directed_graph_repository import Repository
 from Assignments.A1.service.directed_graph_service import Service
@@ -78,6 +80,13 @@ def test_directed_graph(directed_graph):
     assert directed_graph.get_number_of_edges() == 3
 
     directed_graph.print_graph()
+
+    directed_graph_deepcopy = copy.deepcopy(directed_graph)
+
+    directed_graph_deepcopy.remove_vertex(1)
+
+    directed_graph.print_graph()
+    directed_graph_deepcopy.print_graph()
 
 
 def main():
