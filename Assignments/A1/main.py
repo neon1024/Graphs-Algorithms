@@ -89,6 +89,18 @@ def test_directed_graph(directed_graph):
     directed_graph_deepcopy.print_graph()
 
 
+def write_directed_graph_to_file(directed_graph, file_name):
+    NULL_NODE_SYMBOL = -1
+    with open(file_name, "w") as file:
+        for vertex in directed_graph.parse_vertices():
+            null_vertex = True
+            for target in directed_graph.parse_outbound_edges(vertex):
+                file.write(f"{vertex} {target} {directed_graph.get_edge_cost(vertex, target)}\n")
+                null_vertex = False
+            if null_vertex:
+                file.write(f"{vertex} {NULL_NODE_SYMBOL}\n")
+
+
 def main():
     file_name = "first_format.txt"
 
@@ -98,7 +110,13 @@ def main():
     directed_graph = read_directed_graph_from_file_first_convention(file_name)
     directed_graph.print_graph()
 
-    test_directed_graph(directed_graph)
+    # test_directed_graph(directed_graph)
+
+    directed_graph.add_vertex(4)
+
+    file_name = "output.txt"
+
+    write_directed_graph_to_file(directed_graph, file_name)
 
 
 if __name__ == "__main__":
