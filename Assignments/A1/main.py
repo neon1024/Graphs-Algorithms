@@ -73,7 +73,11 @@ def test_directed_graph(directed_graph):
     directed_graph.add_vertex(4)
     assert directed_graph.get_number_of_vertices() == 5
 
-    #
+    directed_graph.remove_vertex(0)
+    assert directed_graph.get_number_of_vertices() == 4
+    assert directed_graph.get_number_of_edges() == 3
+
+    directed_graph.print_graph()
 
 
 def main():

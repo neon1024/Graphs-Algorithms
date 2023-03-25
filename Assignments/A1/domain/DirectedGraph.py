@@ -1,4 +1,4 @@
-from Assignments.A1.domain.CustomExceptions import EdgeAlreadyExistsError, EdgeDoesNotExistsError, VertexAlreadyExistsError
+from Assignments.A1.domain.CustomExceptions import EdgeAlreadyExistsError, EdgeDoesNotExistsError, VertexAlreadyExistsError, VertexDoesNotExistsError
 
 
 class DirectedGraph:
@@ -9,13 +9,9 @@ class DirectedGraph:
     def __init__(self, number_of_vertices):
         self.__number_of_vertices = number_of_vertices
         self.__number_of_edges = 0
-        self.__predecessors = {}
-        self.__successors = {}
+        self.__predecessors = {i: [] for i in range(number_of_vertices)}
+        self.__successors = {i: [] for i in range(number_of_vertices)}
         self.__costs = {}
-
-        for index in range(number_of_vertices):
-            self.__predecessors[index] = []
-            self.__successors[index] = []
 
     def get_number_of_vertices(self):
         return self.__number_of_vertices
@@ -40,6 +36,7 @@ class DirectedGraph:
         return target in self.__successors[origin] and origin in self.__predecessors[target] and (origin, target) in self.__costs.keys()
 
     def add_edge(self, origin, target, cost):
+        # TODO: return True on success, False otherwise
         if self.is_edge(origin, target) == 0:
             self.__successors[origin].append(target)
             self.__predecessors[target].append(origin)
@@ -49,6 +46,7 @@ class DirectedGraph:
             raise EdgeAlreadyExistsError()
 
     def remove_edge(self, origin, target):
+        # TODO: return True on success, False otherwise
         if self.is_edge(origin, target):
             del self.__costs[(origin, target)]
             self.__number_of_edges -= 1
@@ -56,6 +54,7 @@ class DirectedGraph:
             raise EdgeDoesNotExistsError()
 
     def add_vertex(self, vertex):
+        # TODO: return True on success, False otherwise
         if vertex in self.__successors:
             raise VertexAlreadyExistsError()
         else:
@@ -63,6 +62,38 @@ class DirectedGraph:
             self.__successors[vertex] = []
             self.__number_of_vertices += 1
 
+    def remove_vertex(self, vertex):
+        # TODO: return True on success, False otherwise
+        if vertex in self.__successors:
+            # remove all edges associated with vertex
+            for origin in self.__predecessors[vertex]:
+                if (origin, vertex) in self.__costs.keys():
+                    del self.__costs[(origin, vertex)]
+                    self.__number_of_edges -= 1
+
+            for target in self.__successors[vertex]:
+                if (vertex, target) in self.__costs.keys():
+                    del self.__costs[(vertex, target)]
+                    self.__number_of_edges -= 1
+
+            # remove vertex from the successors of all the predecessors of vertex
+            for origin in self.__predecessors[vertex]:
+                self.__successors[origin].remove(vertex)
+
+            # remove vertex from the predecessors of all the successors of vertex
+            for target in self.__successors[vertex]:
+                self.__predecessors[target].remove(vertex)
+
+            # remove vertex from predecessors
+            del self.__predecessors[vertex]
+
+            # remove vertex from successors
+            del self.__successors[vertex]
+
+            self.__number_of_vertices -= 1
+
+        else:
+            raise VertexDoesNotExistsError()
 
     def parse_vertices(self):
         for vertex in self.__successors:
@@ -77,10 +108,10 @@ class DirectedGraph:
             yield target
 
     def print_graph(self):
-        for i in range(self.__number_of_vertices):
+        for i in self.__successors:
             print(f"{i}: ", end="")
 
-            for successor in self.__successors[i]:
-                print(f"{successor}", end=" ")
+            for vertex in self.__successors[i]:
+                print(f"{vertex}", end=" ")
 
             print()
