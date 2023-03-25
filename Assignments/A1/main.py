@@ -9,6 +9,7 @@ def get_directed_graph_from_first_file_convention():
     COST = 2
 
     file_name = input("input file: ")
+    file_name = file_name.strip()
 
     with open(file_name, "r") as file:
         tokens = file.readline()
