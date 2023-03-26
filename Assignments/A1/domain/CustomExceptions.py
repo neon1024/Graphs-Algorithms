@@ -16,3 +16,13 @@ class VertexAlreadyExistsError(BaseException):
 class VertexDoesNotExistsError(BaseException):
     def __init__(self):
         print("[!] Vertex does not exists")
+
+
+class InvalidNumberOfVerticesError(BaseException):
+    def __init__(self):
+        print("[!] Invalid number of vertices")
+
+
+class InvalidNumberOfEdgesError(BaseException):
+    def __init__(self):
+        print("[!] Invalid number of edges")
