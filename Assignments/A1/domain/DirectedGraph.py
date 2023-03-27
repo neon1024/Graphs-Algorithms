@@ -95,6 +95,9 @@ class DirectedGraph:
         else:
             raise VertexDoesNotExistsError()
 
+    def is_vertex(self, vertex):
+        return vertex in self.__successors
+
     def parse_vertices(self):
         for vertex in self.__successors:
             yield vertex

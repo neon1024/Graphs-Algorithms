@@ -1,7 +1,8 @@
 import copy
 import random
 
-from Assignments.A1.domain.CustomExceptions import InvalidNumberOfVerticesError, InvalidNumberOfEdgesError
+from Assignments.A1.domain.CustomExceptions import InvalidNumberOfVerticesError, InvalidNumberOfEdgesError, EdgeAlreadyExistsError, EdgeDoesNotExistsError, VertexAlreadyExistsError, \
+    VertexDoesNotExistsError
 from Assignments.A1.presentation.console import Console
 from Assignments.A1.repository.directed_graph_repository import Repository
 from Assignments.A1.service.directed_graph_service import Service
@@ -126,6 +127,160 @@ def get_random_directed_graph(number_of_vertices, number_of_edges):
     return directed_graph
 
 
+def print_menu_options():
+    print("1: add edge")
+    print("2: get edge cost")
+    print("3: modify edge")
+    print("4: remove edge")
+    print("5: check edge")
+    print("6: get number of edges")
+
+    print("7: add vertex")
+    print("8: get in degree")
+    print("9: get out degree")
+    print("10: remove vertex")
+    print("11: check vertex")
+    print("12: get number of vertices")
+    print("13: parse vertices")
+    print("14: parse inbound edges")
+    print("15: parse outbound edges")
+
+
+def add_edge(directed_graph):
+    origin = int(input("origin: "))
+    target = int(input("target: "))
+
+    if directed_graph.is_edge(origin, target):
+        raise EdgeAlreadyExistsError()
+    else:
+        cost = int("cost: ")
+
+        directed_graph.add_edge(origin, target, cost)
+
+
+def get_edge_cost(directed_graph):
+    origin = int(input("origin: "))
+    target = int(input("target: "))
+
+    if directed_graph.is_edge(origin, target) == False:
+        raise EdgeDoesNotExistsError()
+    else:
+        print(directed_graph.get_edge_cost(origin, target))
+
+
+def modify_edge(directed_graph):
+    origin = int(input("origin: "))
+    target = int(input("target: "))
+
+    if directed_graph.is_edge(origin, target):
+        new_cost = int(input("new cost: "))
+        directed_graph.set_edge_cost(origin, target, new_cost)
+    else:
+        raise EdgeDoesNotExistsError()
+
+
+def remove_edge(directed_graph):
+    origin = int(input("origin: "))
+    target = int(input("target: "))
+
+    if directed_graph.is_edge(origin, target) == False:
+        raise EdgeDoesNotExistsError()
+    else:
+        directed_graph.remove_edge(origin, target)
+
+
+def check_edge(directed_graph):
+    origin = int(input("origin: "))
+    target = int(input("target: "))
+
+    if directed_graph.is_edge(origin, target):
+        print("Edge exists")
+    else:
+        print("Edge does not exists")
+
+
+def get_number_of_edges(directed_graph):
+    print(directed_graph.get_number_of_edges)
+
+
+def add_vertex(directed_graph):
+    vertex = int(input("new vertex: "))
+
+    if directed_graph.is_vertex(vertex):
+        raise VertexAlreadyExistsError()
+    else:
+        directed_graph.add_vertex(vertex)
+
+
+def get_in_degree(directed_graph):
+    vertex = int(input("vertex: "))
+
+    if directed_graph.is_vertex(vertex) == False:
+        raise VertexDoesNotExistsError()
+    else:
+        print(directed_graph.get_in_degree(vertex))
+
+
+def get_out_degree(directed_graph):
+    vertex = int(input("vertex: "))
+
+    if directed_graph.is_vertex(vertex) == False:
+        raise VertexDoesNotExistsError()
+    else:
+        print(directed_graph.get_out_degree(vertex))
+
+
+def remove_vertex(directed_graph):
+    vertex = int(input("vertex: "))
+
+    if directed_graph.is_vertex(vertex) == False:
+        raise VertexDoesNotExistsError()
+    else:
+        directed_graph.remove_vertex(vertex)
+
+
+def check_vertex(directed_graph):
+    vertex = int(input("vertex: "))
+
+    if directed_graph.is_vertex(vertex):
+        print("Vertex exists")
+    else:
+        print("Vertex does not exists")
+
+
+def get_number_of_vertices(directed_graph):
+    print(directed_graph.get_number_of_vertices())
+
+
+def parse_vertices(directed_graph):
+    for vertex in directed_graph.parse_vertices():
+        print(vertex)
+
+
+def parse_inbound_edges(directed_graph):
+    vertex = int(input("vertex: "))
+
+    if directed_graph.is_vertex(vertex) == False:
+        raise VertexDoesNotExistsError()
+    else:
+        for origin in directed_graph.parse_inbound_edges(vertex):
+            print(origin)
+
+
+def parse_outbound_edges(directed_graph):
+    vertex = int(input("vertex: "))
+
+    if directed_graph.is_vertex(vertex) == False:
+        raise VertexDoesNotExistsError()
+    else:
+        for target in directed_graph.parse_outbound_edges(vertex):
+            print(target)
+
+
+def print_graph(directed_graph):
+    directed_graph.print_graph()
+
+
 def main():
     file_name = "first_format.txt"
 
@@ -134,10 +289,6 @@ def main():
 
     directed_graph = read_directed_graph_from_file_first_convention(file_name)
     directed_graph.print_graph()
-
-    # test_directed_graph(directed_graph)
-
-    directed_graph.add_vertex(4)
 
     file_name = "output.txt"
 
@@ -149,6 +300,37 @@ def main():
     random_directed_graph = get_random_directed_graph(number_of_vertices, number_of_edges)
 
     random_directed_graph.print_graph()
+
+    menu_options = {
+        "1": add_edge,
+        "2": get_edge_cost,
+        "3": modify_edge,
+        "4": remove_edge,
+        "5": check_edge,
+        "6": get_number_of_edges,
+        "7": add_vertex,
+        "8": get_in_degree,
+        "9": get_out_degree,
+        "10": remove_vertex,
+        "11": check_vertex,
+        "12": get_number_of_vertices,
+        "13": parse_vertices,
+        "14": parse_inbound_edges,
+        "15": parse_outbound_edges,
+        "16": print_graph,
+        "x": exit
+    }
+
+    while True:
+        try:
+            print_menu_options()
+
+            chosen_option = input("> ")
+
+            menu_options[chosen_option](directed_graph)
+
+        except Exception as error:
+            print(error)
 
 
 if __name__ == "__main__":
