@@ -291,18 +291,29 @@ def exit_program(directed_graph):
 
 
 def main():
-    input_file_name = input("file name: ")
-    input_file_name = input_file_name.strip()
+    try:
+        random_directed_graph_1 = get_random_directed_graph(7, 20)
 
-    directed_graph = read_directed_graph_from_file_first_convention(input_file_name)
-    directed_graph.print_graph()
+        write_directed_graph_to_file(random_directed_graph_1, "random_graph1.txt")
 
-    number_of_vertices = int(input("number of vertices: "))
-    number_of_edges = int(input("number of edges: "))
+        random_directed_graph_2 = get_random_directed_graph(6, 40)
 
-    random_directed_graph = get_random_directed_graph(number_of_vertices, number_of_edges)
+        write_directed_graph_to_file(random_directed_graph_2, "random_graph2.txt")
+    except Exception as error:
+        print(error)
+    except InvalidNumberOfEdgesError as error:
+        print(error)
+    except InvalidNumberOfVerticesError as error:
+        print(error)
 
-    random_directed_graph.print_graph()
+    while True:
+        try:
+            input_file_name = input("file name: ")
+            input_file_name = input_file_name.strip()
+            directed_graph = read_directed_graph_from_file_first_convention(input_file_name)
+            break
+        except Exception as error:
+            print(error)
 
     menu_options = {
         "1": add_edge,
@@ -333,6 +344,18 @@ def main():
             menu_options[chosen_option](directed_graph)
 
         except Exception as error:
+            print(error)
+        except VertexDoesNotExistsError as error:
+            print(error)
+        except VertexAlreadyExistsError as error:
+            print(error)
+        except EdgeDoesNotExistsError as error:
+            print(error)
+        except EdgeAlreadyExistsError as error:
+            print(error)
+        except InvalidNumberOfVerticesError as error:
+            print(error)
+        except InvalidNumberOfEdgesError as error:
             print(error)
 
 
