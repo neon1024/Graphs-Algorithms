@@ -144,6 +144,9 @@ def print_menu_options():
     print("13: parse vertices")
     print("14: parse inbound edges")
     print("15: parse outbound edges")
+    print("16: print graph")
+
+    print("x: exit")
 
 
 def add_edge(directed_graph):
@@ -281,18 +284,18 @@ def print_graph(directed_graph):
     directed_graph.print_graph()
 
 
+def exit_program(directed_graph):
+    output_file_name = "output.txt"
+    write_directed_graph_to_file(directed_graph, output_file_name)
+    exit()
+
+
 def main():
-    file_name = "first_format.txt"
+    input_file_name = input("file name: ")
+    input_file_name = input_file_name.strip()
 
-    # file_name = input("file name: ")
-    # file_name = file_name.strip()
-
-    directed_graph = read_directed_graph_from_file_first_convention(file_name)
+    directed_graph = read_directed_graph_from_file_first_convention(input_file_name)
     directed_graph.print_graph()
-
-    file_name = "output.txt"
-
-    write_directed_graph_to_file(directed_graph, file_name)
 
     number_of_vertices = int(input("number of vertices: "))
     number_of_edges = int(input("number of edges: "))
@@ -318,7 +321,7 @@ def main():
         "14": parse_inbound_edges,
         "15": parse_outbound_edges,
         "16": print_graph,
-        "x": exit
+        "x": exit_program
     }
 
     while True:
