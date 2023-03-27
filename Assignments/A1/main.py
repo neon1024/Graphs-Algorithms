@@ -3,9 +3,6 @@ import random
 
 from Assignments.A1.domain.CustomExceptions import InvalidNumberOfVerticesError, InvalidNumberOfEdgesError, EdgeAlreadyExistsError, EdgeDoesNotExistsError, VertexAlreadyExistsError, \
     VertexDoesNotExistsError
-from Assignments.A1.presentation.console import Console
-from Assignments.A1.repository.directed_graph_repository import Repository
-from Assignments.A1.service.directed_graph_service import Service
 from domain.DirectedGraph import DirectedGraph
 
 
@@ -108,7 +105,7 @@ def get_random_directed_graph(number_of_vertices, number_of_edges):
     if number_of_vertices < 0:
         raise InvalidNumberOfVerticesError()
 
-    if number_of_edges > number_of_vertices**2:
+    if number_of_edges > number_of_vertices ** 2:
         raise InvalidNumberOfEdgesError()
 
     directed_graph = DirectedGraph(number_of_vertices)
@@ -116,8 +113,8 @@ def get_random_directed_graph(number_of_vertices, number_of_edges):
     added_edges = 0
 
     while added_edges < number_of_edges:
-        origin = random.randint(0, number_of_vertices-1)
-        target = random.randint(0, number_of_vertices-1)
+        origin = random.randint(0, number_of_vertices - 1)
+        target = random.randint(0, number_of_vertices - 1)
 
         if not directed_graph.is_edge(origin, target):
             cost = random.randint(0, 1000)

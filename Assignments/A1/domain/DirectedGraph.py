@@ -26,10 +26,16 @@ class DirectedGraph:
         return len(self.__successors[vertex])
 
     def get_edge_cost(self, origin, target):
-        return self.__costs[(origin, target)]
+        if self.is_edge(origin, target):
+            return self.__costs[(origin, target)]
+        else:
+            raise EdgeDoesNotExistsError()
 
     def set_edge_cost(self, origin, target, new_cost):
-        self.__costs[(origin, target)] = new_cost
+        if self.is_edge(origin, target):
+            self.__costs[(origin, target)] = new_cost
+        else:
+            raise EdgeDoesNotExistsError()
 
     def is_edge(self, origin, target):
         # only 1 of these may be True
