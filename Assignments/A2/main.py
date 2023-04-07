@@ -53,41 +53,40 @@ def add_edge(undirected_graph):
 
     if undirected_graph.is_edge(origin, target):
         raise EdgeAlreadyExistsError()
-    else:
-        cost = int("cost: ")
 
-        undirected_graph.add_edge(origin, target, cost)
+    cost = int(input("cost: "))
+    undirected_graph.add_edge(origin, target, cost)
 
 
 def get_edge_cost(undirected_graph):
     origin = int(input("origin: "))
     target = int(input("target: "))
 
-    if undirected_graph.is_edge(origin, target) == False:
+    if undirected_graph.is_edge(origin, target) == 0:
         raise EdgeDoesNotExistsError()
-    else:
-        print(undirected_graph.get_edge_cost(origin, target))
+
+    print(undirected_graph.get_edge_cost(origin, target))
 
 
 def modify_edge(undirected_graph):
     origin = int(input("origin: "))
     target = int(input("target: "))
 
-    if undirected_graph.is_edge(origin, target):
-        new_cost = int(input("new cost: "))
-        undirected_graph.set_edge_cost(origin, target, new_cost)
-    else:
+    if undirected_graph.is_edge(origin, target) == 0:
         raise EdgeDoesNotExistsError()
+
+    new_cost = int(input("new cost: "))
+    undirected_graph.set_edge_cost(origin, target, new_cost)
 
 
 def remove_edge(undirected_graph):
     origin = int(input("origin: "))
     target = int(input("target: "))
 
-    if undirected_graph.is_edge(origin, target) == False:
+    if undirected_graph.is_edge(origin, target) == 0:
         raise EdgeDoesNotExistsError()
-    else:
-        undirected_graph.remove_edge(origin, target)
+
+    undirected_graph.remove_edge(origin, target)
 
 
 def check_edge(undirected_graph):
@@ -101,7 +100,7 @@ def check_edge(undirected_graph):
 
 
 def get_number_of_edges(undirected_graph):
-    print(undirected_graph.get_number_of_edges)
+    print(undirected_graph.get_number_of_edges())
 
 
 def add_vertex(undirected_graph):
@@ -109,8 +108,8 @@ def add_vertex(undirected_graph):
 
     if undirected_graph.is_vertex(vertex):
         raise VertexAlreadyExistsError()
-    else:
-        undirected_graph.add_vertex(vertex)
+
+    undirected_graph.add_vertex(vertex)
 
 
 def get_degree(undirected_graph):
@@ -118,17 +117,17 @@ def get_degree(undirected_graph):
 
     if undirected_graph.is_vertex(vertex) == False:
         raise VertexDoesNotExistsError()
-    else:
-        print(undirected_graph.get_degree(vertex))
+
+    print(undirected_graph.get_degree(vertex))
 
 
 def remove_vertex(undirected_graph):
     vertex = int(input("vertex: "))
 
-    if undirected_graph.is_vertex(vertex) == False:
+    if undirected_graph.is_vertex(vertex) == 0:
         raise VertexDoesNotExistsError()
-    else:
-        undirected_graph.remove_vertex(vertex)
+
+    undirected_graph.remove_vertex(vertex)
 
 
 def check_vertex(undirected_graph):
@@ -136,8 +135,8 @@ def check_vertex(undirected_graph):
 
     if undirected_graph.is_vertex(vertex):
         print("Vertex exists")
-    else:
-        print("Vertex does not exists")
+
+    print("Vertex does not exists")
 
 
 def get_number_of_vertices(undirected_graph):
@@ -149,24 +148,14 @@ def parse_vertices(undirected_graph):
         print(vertex)
 
 
-def parse_inbound_edges(undirected_graph):
+def parse_edges(undirected_graph):
     vertex = int(input("vertex: "))
 
     if undirected_graph.is_vertex(vertex) == False:
         raise VertexDoesNotExistsError()
-    else:
-        for origin in undirected_graph.parse_inbound_edges(vertex):
-            print(origin)
 
-
-def parse_outbound_edges(undirected_graph):
-    vertex = int(input("vertex: "))
-
-    if undirected_graph.is_vertex(vertex) == False:
-        raise VertexDoesNotExistsError()
-    else:
-        for target in undirected_graph.parse_outbound_edges(vertex):
-            print(target)
+    for neighbor in undirected_graph.parse_edges(vertex):
+        print(neighbor)
 
 
 def print_graph(undirected_graph):
@@ -174,13 +163,32 @@ def print_graph(undirected_graph):
 
 
 def exit_program(undirected_graph):
-    output_file_name = "output.txt"
-    write_undirected_graph_to_file(undirected_graph, output_file_name)
+    # output_file_name = "output.txt"
+    # write_undirected_graph_to_file(undirected_graph, output_file_name)
     exit()
 
 
 def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_graph):
-    pass
+    # list of visited nodes
+    # list of components: each root has a list of nodes, first the root is randomly chosen, then the root is the next
+    # lower unvisited node
+
+    visited_nodes = []
+    components = {}
+
+    for node in undirected_graph.parse_vertices():
+        if node not in visited_nodes:
+            visited_nodes.append(node)
+
+            components[node] = []
+
+            for neighbor in undirected_graph.parse_edges(node):
+                if neighbor not in visited_nodes:
+                    visited_nodes.append(neighbor)
+
+                    components[node].append(neighbor)
+
+    print(components)
 
 
 def print_menu_options():
@@ -207,14 +215,16 @@ def print_menu_options():
 
 def main():
     # TODO create a list with the connected components generated as graph objects
-    while True:
-        try:
-            input_file_name = input("file name: ")
-            input_file_name = input_file_name.strip()
-            undirected_graph = read_undirected_graph_from_file_first_convention(input_file_name)
-            break
-        except Exception as error:
-            print(error)
+    # while True:
+    #     try:
+    #         input_file_name = input("file name: ")
+    #         input_file_name = input_file_name.strip()
+    #         undirected_graph = read_undirected_graph_from_file_first_convention(input_file_name)
+    #         break
+    #     except Exception as error:
+    #         print(error)
+
+    undirected_graph = UndirectedGraph(7)
 
     menu_options = {
         "1": add_edge,
@@ -224,15 +234,14 @@ def main():
         "5": check_edge,
         "6": get_number_of_edges,
         "7": add_vertex,
-        " ": get_degree,
-        "10": remove_vertex,
-        "11": check_vertex,
-        "12": get_number_of_vertices,
-        "13": parse_vertices,
-        "14": parse_inbound_edges,
-        "15": parse_outbound_edges,
-        "16": print_graph,
-        "17": find_the_connected_components_of_an_undirected_graph_using_DFS,
+        "8": get_degree,
+        "9": remove_vertex,
+        "10": check_vertex,
+        "11": get_number_of_vertices,
+        "12": parse_vertices,
+        "13": parse_edges,
+        "14": print_graph,
+        "15": find_the_connected_components_of_an_undirected_graph_using_DFS,
         "x": exit_program
     }
 

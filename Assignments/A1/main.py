@@ -153,7 +153,7 @@ def add_edge(directed_graph):
     if directed_graph.is_edge(origin, target):
         raise EdgeAlreadyExistsError()
     else:
-        cost = int("cost: ")
+        cost = int(input("cost: "))
 
         directed_graph.add_edge(origin, target, cost)
 
@@ -200,7 +200,7 @@ def check_edge(directed_graph):
 
 
 def get_number_of_edges(directed_graph):
-    print(directed_graph.get_number_of_edges)
+    print(directed_graph.get_number_of_edges())
 
 
 def add_vertex(directed_graph):

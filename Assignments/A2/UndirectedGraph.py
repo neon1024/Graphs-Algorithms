@@ -65,8 +65,12 @@ class UndirectedGraph:
         if self.is_edge(origin, target) == 0:
             raise EdgeDoesNotExistsError()
 
+        self.__neighbors[origin].remove(target)
+        self.__neighbors[target].remove(origin)
+
         del self.__costs[(origin, target)]
         del self.__costs[(target, origin)]
+
         self.__number_of_edges -= 1
 
     def add_vertex(self, vertex):
@@ -82,11 +86,12 @@ class UndirectedGraph:
         if self.is_vertex(vertex) == 0:
             raise VertexDoesNotExistsError()
 
-        for neighbor in self.__neighbors[vertex]:
-            self.__neighbors[neighbor].remove(vertex)
-            self.remove_edge(vertex, neighbor)
+        while len(self.__neighbors[vertex]) != 0:
+            self.remove_edge(vertex, self.__neighbors[vertex][0])
 
         del self.__neighbors[vertex]
+
+        self.__number_of_vertices -= 1
 
     def is_vertex(self, vertex):
         return vertex in self.__neighbors.keys()
