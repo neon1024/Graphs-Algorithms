@@ -192,19 +192,17 @@ def print_menu_options():
     print("6: get number of edges")
 
     print("7: add vertex")
-    print(" : get degree")
-    print("10: remove vertex")
-    print("11: check vertex")
-    print("12: get number of vertices")
-    print("13: parse vertices")
-    print("14: parse inbound edges")
-    print("15: parse outbound edges")
-    print("16: print graph")
+    print("8: get degree")
+    print("9: remove vertex")
+    print("10: check vertex")
+    print("11: get number of vertices")
+    print("12: parse vertices")
+    print("13: parse edges")
+    print("14: print graph")
 
-    print("17: find the connected components of the graph using DFS")
+    print("15: find the connected components of the graph using DFS")
 
     print("x: exit")
-
 
 
 def main():

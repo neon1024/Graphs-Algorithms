@@ -9,7 +9,7 @@ class UndirectedGraph:
     def __init__(self, number_of_vertices):
         self.__number_of_vertices = number_of_vertices
         self.__number_of_edges = 0
-        self.__neighbors = {i: [] for i in range(1, number_of_vertices)}
+        self.__neighbors = {i: [] for i in range(number_of_vertices)}
         self.__costs = {}
 
     def get_number_of_vertices(self):
@@ -96,13 +96,9 @@ class UndirectedGraph:
             yield vertex
 
     def parse_edges(self, vertex):
-        
+        for neighbour in self.__neighbors[vertex]:
+            yield neighbour
 
     def print_graph(self):
-        for i in self.__successors:
-            print(f"{i}: ", end="")
-
-            for vertex in self.__successors[i]:
-                print(f"{vertex}", end=" ")
-
-            print()
+        for node in self.__neighbors.keys():
+            print(f"{node}: {self.__neighbors[node]}")
