@@ -26,3 +26,8 @@ class InvalidNumberOfVerticesError(BaseException):
 class InvalidNumberOfEdgesError(BaseException):
     def __init__(self):
         print("[!] Invalid number of edges")
+
+
+class NodesMustBeDifferentError(BaseException):
+    def __init__(self):
+        print("[!] Nodes must be different")

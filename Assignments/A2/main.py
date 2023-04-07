@@ -1,4 +1,5 @@
-from Assignments.A2.CustomExceptions import EdgeAlreadyExistsError, EdgeDoesNotExistsError, VertexAlreadyExistsError, VertexDoesNotExistsError, InvalidNumberOfEdgesError, InvalidNumberOfVerticesError
+from Assignments.A2.CustomExceptions import EdgeAlreadyExistsError, EdgeDoesNotExistsError, VertexAlreadyExistsError, VertexDoesNotExistsError, InvalidNumberOfEdgesError, InvalidNumberOfVerticesError, \
+    NodesMustBeDifferentError
 from Assignments.A2.UndirectedGraph import UndirectedGraph
 
 
@@ -44,30 +45,6 @@ def write_undirected_graph_to_file(undirected_graph, file_name):
                 null_vertex = False
             if null_vertex:
                 file.write(f"{vertex} {NULL_NODE_SYMBOL}\n")
-
-
-def print_menu_options():
-    print("1: add edge")
-    print("2: get edge cost")
-    print("3: modify edge")
-    print("4: remove edge")
-    print("5: check edge")
-    print("6: get number of edges")
-
-    print("7: add vertex")
-    print("8: get in degree")
-    print("9: get out degree")
-    print("10: remove vertex")
-    print("11: check vertex")
-    print("12: get number of vertices")
-    print("13: parse vertices")
-    print("14: parse inbound edges")
-    print("15: parse outbound edges")
-    print("16: print graph")
-
-    print("17: find the connected components of the graph using DFS")
-
-    print("x: exit")
 
 
 def add_edge(undirected_graph):
@@ -136,22 +113,13 @@ def add_vertex(undirected_graph):
         undirected_graph.add_vertex(vertex)
 
 
-def get_in_degree(undirected_graph):
+def get_degree(undirected_graph):
     vertex = int(input("vertex: "))
 
     if undirected_graph.is_vertex(vertex) == False:
         raise VertexDoesNotExistsError()
     else:
-        print(undirected_graph.get_in_degree(vertex))
-
-
-def get_out_degree(undirected_graph):
-    vertex = int(input("vertex: "))
-
-    if undirected_graph.is_vertex(vertex) == False:
-        raise VertexDoesNotExistsError()
-    else:
-        print(undirected_graph.get_out_degree(vertex))
+        print(undirected_graph.get_degree(vertex))
 
 
 def remove_vertex(undirected_graph):
@@ -215,7 +183,32 @@ def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_gr
     pass
 
 
+def print_menu_options():
+    print("1: add edge")
+    print("2: get edge cost")
+    print("3: modify edge")
+    print("4: remove edge")
+    print("5: check edge")
+    print("6: get number of edges")
+
+    print("7: add vertex")
+    print(" : get degree")
+    print("10: remove vertex")
+    print("11: check vertex")
+    print("12: get number of vertices")
+    print("13: parse vertices")
+    print("14: parse inbound edges")
+    print("15: parse outbound edges")
+    print("16: print graph")
+
+    print("17: find the connected components of the graph using DFS")
+
+    print("x: exit")
+
+
+
 def main():
+    # TODO create a list with the connected components generated as graph objects
     while True:
         try:
             input_file_name = input("file name: ")
@@ -233,8 +226,7 @@ def main():
         "5": check_edge,
         "6": get_number_of_edges,
         "7": add_vertex,
-        "8": get_in_degree,
-        "9": get_out_degree,
+        " ": get_degree,
         "10": remove_vertex,
         "11": check_vertex,
         "12": get_number_of_vertices,
@@ -267,6 +259,8 @@ def main():
         except InvalidNumberOfVerticesError as error:
             print(error)
         except InvalidNumberOfEdgesError as error:
+            print(error)
+        except NodesMustBeDifferentError as error:
             print(error)
 
 
