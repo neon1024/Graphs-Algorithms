@@ -192,9 +192,17 @@ def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_gr
             graphs.append(components)
 
     print("None")
-    
+
     for graph in graphs:
         print(graph)
+
+    # TODO create UndirectedGraph for each graph from graphs
+
+    for graph in graphs:
+        print(len(graph.keys()))
+        new_undirected_graph = UndirectedGraph(0)
+
+        pass
 
 
 def print_menu_options():
