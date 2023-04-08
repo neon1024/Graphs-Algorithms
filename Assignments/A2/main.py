@@ -169,9 +169,6 @@ def exit_program(undirected_graph):
 
 
 def DFS(undirected_graph, root, visited_nodes, components, costs):
-    # mark the root as visited
-    visited_nodes.append(root)
-
     # for each neighbor of the given root that is not yet visited we perform a DFS
     for neighbor in undirected_graph.parse_edges(root):
         if neighbor not in visited_nodes:
@@ -205,6 +202,9 @@ def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_gr
     # traverse each node of the graph that is not yet visited and pass it as the root to the DFS function
     for root in undirected_graph.parse_vertices():
         if root not in visited_nodes:
+            # mark the root as visited
+            visited_nodes.append(root)
+
             # a dictionary of node: [neighbors] representing a new graph based on a connected component
             components = {root: []}
 
