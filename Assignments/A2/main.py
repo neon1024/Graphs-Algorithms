@@ -168,27 +168,33 @@ def exit_program(undirected_graph):
     exit()
 
 
+def DFS(undirected_graph, root, visited_nodes, components):
+    visited_nodes.append(root)
+
+    for neighbor in undirected_graph.parse_edges(root):
+        if neighbor not in visited_nodes:
+            print(f"{neighbor} -> ", end="")
+            visited_nodes.append(neighbor)
+            components[root].append(neighbor)
+            components[neighbor] = [root]
+            DFS(undirected_graph, neighbor, visited_nodes, components)
+
+
 def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_graph):
-    # list of visited nodes
-    # list of components: each root has a list of nodes, first the root is randomly chosen, then the root is the next
-    # lower unvisited node
-
     visited_nodes = []
-    components = {}
+    graphs = []
 
-    for node in undirected_graph.parse_vertices():
-        if node not in visited_nodes:
-            visited_nodes.append(node)
+    for root in undirected_graph.parse_vertices():
+        if root not in visited_nodes:
+            print(f"{root} -> ", end="")
+            components = {root: []}
+            DFS(undirected_graph, root, visited_nodes, components)
+            graphs.append(components)
 
-            components[node] = []
-
-            for neighbor in undirected_graph.parse_edges(node):
-                if neighbor not in visited_nodes:
-                    visited_nodes.append(neighbor)
-
-                    components[node].append(neighbor)
-
-    print(components)
+    print("None")
+    
+    for graph in graphs:
+        print(graph)
 
 
 def print_menu_options():
@@ -224,7 +230,19 @@ def main():
     #     except Exception as error:
     #         print(error)
 
-    undirected_graph = UndirectedGraph(7)
+    undirected_graph = UndirectedGraph(14)
+
+    undirected_graph.add_edge(0, 1, 1)
+    undirected_graph.add_edge(0, 2, 2)
+    undirected_graph.add_edge(1, 3, 3)
+    undirected_graph.add_edge(3, 4, 4)
+    undirected_graph.add_edge(3, 6, 5)
+    undirected_graph.add_edge(2, 5, 6)
+    undirected_graph.add_edge(7, 8, 7)
+    undirected_graph.add_edge(9, 10, 8)
+    undirected_graph.add_edge(10, 11, 9)
+    undirected_graph.add_edge(11, 12, 10)
+    undirected_graph.add_edge(11, 13, 11)
 
     menu_options = {
         "1": add_edge,
