@@ -168,7 +168,7 @@ def exit_program(undirected_graph):
     exit()
 
 
-def DFS(undirected_graph, root, visited_nodes, components):
+def DFS(undirected_graph, root, visited_nodes, components, costs):
     visited_nodes.append(root)
 
     for neighbor in undirected_graph.parse_edges(root):
@@ -177,32 +177,39 @@ def DFS(undirected_graph, root, visited_nodes, components):
             visited_nodes.append(neighbor)
             components[root].append(neighbor)
             components[neighbor] = [root]
-            DFS(undirected_graph, neighbor, visited_nodes, components)
+            edge_cost = undirected_graph.get_edge_cost(root, neighbor)
+            costs[(root, neighbor)] = edge_cost
+            costs[(neighbor, root)] = edge_cost
+            DFS(undirected_graph, neighbor, visited_nodes, components, costs)
 
 
 def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_graph):
     visited_nodes = []
     graphs = []
+    costs = {}
 
     for root in undirected_graph.parse_vertices():
         if root not in visited_nodes:
             print(f"{root} -> ", end="")
             components = {root: []}
-            DFS(undirected_graph, root, visited_nodes, components)
+            DFS(undirected_graph, root, visited_nodes, components, costs)
             graphs.append(components)
 
     print("None")
-
-    for graph in graphs:
-        print(graph)
+    print()
 
     # TODO create UndirectedGraph for each graph from graphs
-
+    # graph: {key: [values]}
     for graph in graphs:
-        print(len(graph.keys()))
         new_undirected_graph = UndirectedGraph(0)
 
-        pass
+        for node in graph.keys():
+            for neighbor in graph[node]:
+                if new_undirected_graph.is_edge(node, neighbor) == 0:
+                    new_undirected_graph.add_edge(node, neighbor, costs[(node, neighbor)])
+
+        new_undirected_graph.print_graph()
+        print()
 
 
 def print_menu_options():
@@ -228,16 +235,6 @@ def print_menu_options():
 
 
 def main():
-    # TODO create a list with the connected components generated as graph objects
-    # while True:
-    #     try:
-    #         input_file_name = input("file name: ")
-    #         input_file_name = input_file_name.strip()
-    #         undirected_graph = read_undirected_graph_from_file_first_convention(input_file_name)
-    #         break
-    #     except Exception as error:
-    #         print(error)
-
     undirected_graph = UndirectedGraph(14)
 
     undirected_graph.add_edge(0, 1, 1)

@@ -35,9 +35,6 @@ class UndirectedGraph:
             raise EdgeDoesNotExistsError()
 
     def is_edge(self, origin, target):
-        if origin not in self.__neighbors.keys() or target not in self.__neighbors.keys():
-            raise VertexDoesNotExistsError
-
         return (origin, target) in self.__costs.keys() and (target, origin) in self.__costs.keys()
 
     def add_edge(self, origin, target, cost):
