@@ -40,9 +40,11 @@ def write_undirected_graph_to_file(undirected_graph, file_name):
     with open(file_name, "w") as file:
         for vertex in undirected_graph.parse_vertices():
             null_vertex = True
-            for target in undirected_graph.parse_outbound_edges(vertex):
+
+            for target in undirected_graph.parse_edges(vertex):
                 file.write(f"{vertex} {target} {undirected_graph.get_edge_cost(vertex, target)}\n")
                 null_vertex = False
+
             if null_vertex:
                 file.write(f"{vertex} {NULL_NODE_SYMBOL}\n")
 
@@ -163,8 +165,8 @@ def print_graph(undirected_graph):
 
 
 def exit_program(undirected_graph):
-    # output_file_name = "output.txt"
-    # write_undirected_graph_to_file(undirected_graph, output_file_name)
+    output_file_name = "output.txt"
+    write_undirected_graph_to_file(undirected_graph, output_file_name)
     exit()
 
 
@@ -224,9 +226,15 @@ def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_gr
         new_undirected_graph = UndirectedGraph(0)
 
         for node in graph.keys():
+            isolated_node = True
+
             for neighbor in graph[node]:
                 if new_undirected_graph.is_edge(node, neighbor) == 0:
                     new_undirected_graph.add_edge(node, neighbor, costs[(node, neighbor)])
+                    isolated_node = False
+
+            if isolated_node and new_undirected_graph.is_vertex(node) == 0:
+                new_undirected_graph.add_vertex(node)
 
         new_undirected_graph.print_graph()
 
@@ -256,19 +264,29 @@ def print_menu_options():
 
 
 def main():
-    undirected_graph = UndirectedGraph(14)
+    # undirected_graph = UndirectedGraph(14)
+    #
+    # undirected_graph.add_edge(0, 1, 1)
+    # undirected_graph.add_edge(0, 2, 2)
+    # undirected_graph.add_edge(1, 3, 3)
+    # undirected_graph.add_edge(3, 4, 4)
+    # undirected_graph.add_edge(3, 6, 5)
+    # undirected_graph.add_edge(2, 5, 6)
+    # undirected_graph.add_edge(7, 8, 7)
+    # undirected_graph.add_edge(9, 10, 8)
+    # undirected_graph.add_edge(10, 11, 9)
+    # undirected_graph.add_edge(11, 12, 10)
+    # undirected_graph.add_edge(11, 13, 11)
+    while True:
+        input_file_name = input("input file name: ")
 
-    undirected_graph.add_edge(0, 1, 1)
-    undirected_graph.add_edge(0, 2, 2)
-    undirected_graph.add_edge(1, 3, 3)
-    undirected_graph.add_edge(3, 4, 4)
-    undirected_graph.add_edge(3, 6, 5)
-    undirected_graph.add_edge(2, 5, 6)
-    undirected_graph.add_edge(7, 8, 7)
-    undirected_graph.add_edge(9, 10, 8)
-    undirected_graph.add_edge(10, 11, 9)
-    undirected_graph.add_edge(11, 12, 10)
-    undirected_graph.add_edge(11, 13, 11)
+        try:
+            undirected_graph = read_undirected_graph_from_file_first_convention(input_file_name)
+
+            break
+
+        except Exception as error:
+            print(error)
 
     menu_options = {
         "1": add_edge,

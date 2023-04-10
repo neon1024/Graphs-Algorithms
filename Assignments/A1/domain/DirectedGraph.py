@@ -55,6 +55,8 @@ class DirectedGraph:
         # TODO: return True on success, False otherwise
         if self.is_edge(origin, target):
             del self.__costs[(origin, target)]
+            self.__successors[origin].remove(target)
+            self.__predecessors[target].remove(origin)
             self.__number_of_edges -= 1
         else:
             raise EdgeDoesNotExistsError()
@@ -70,7 +72,10 @@ class DirectedGraph:
 
     def remove_vertex(self, vertex):
         # TODO: return True on success, False otherwise
-        if vertex in self.__successors:
+        if vertex not in self.__successors:
+            raise VertexDoesNotExistsError()
+
+        else:
             # remove all edges associated with vertex
             for origin in self.__predecessors[vertex]:
                 if (origin, vertex) in self.__costs.keys():
@@ -97,9 +102,6 @@ class DirectedGraph:
             del self.__successors[vertex]
 
             self.__number_of_vertices -= 1
-
-        else:
-            raise VertexDoesNotExistsError()
 
     def is_vertex(self, vertex):
         return vertex in self.__successors
