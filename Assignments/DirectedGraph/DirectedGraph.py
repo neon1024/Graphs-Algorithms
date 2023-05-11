@@ -1,4 +1,4 @@
-from Assignments.A1.domain.CustomExceptions import EdgeAlreadyExistError, EdgeDoesNotExistError, VertexAlreadyExistError, VertexDoesNotExistError
+from Assignments.DirectedGraph.CustomExceptions import EdgeAlreadyExistError, EdgeDoesNotExistError, VertexAlreadyExistError, VertexDoesNotExistError
 
 
 class DirectedGraph:

@@ -1,6 +1,6 @@
-from Assignments.A2.CustomExceptions import EdgeAlreadyExistsError, EdgeDoesNotExistsError, VertexAlreadyExistsError, VertexDoesNotExistsError, InvalidNumberOfEdgesError, InvalidNumberOfVerticesError, \
+from Assignments.UndirectedGraph.CustomExceptions import EdgeAlreadyExistError, EdgeDoesNotExistError, VertexAlreadyExistError, VertexDoesNotExistError, InvalidNumberOfEdgesError, InvalidNumberOfVerticesError, \
     NodesMustBeDifferentError
-from Assignments.A2.UndirectedGraph import UndirectedGraph
+from Assignments.UndirectedGraph.UndirectedGraph import UndirectedGraph
 
 
 def read_undirected_graph_from_file_first_convention(file_name: str):
@@ -54,7 +54,7 @@ def add_edge(undirected_graph):
     target = int(input("target: "))
 
     if undirected_graph.is_edge(origin, target):
-        raise EdgeAlreadyExistsError()
+        raise EdgeAlreadyExistError()
 
     cost = int(input("cost: "))
     undirected_graph.add_edge(origin, target, cost)
@@ -65,7 +65,7 @@ def get_edge_cost(undirected_graph):
     target = int(input("target: "))
 
     if undirected_graph.is_edge(origin, target) == 0:
-        raise EdgeDoesNotExistsError()
+        raise EdgeDoesNotExistError()
 
     print(undirected_graph.get_edge_cost(origin, target))
 
@@ -75,7 +75,7 @@ def modify_edge(undirected_graph):
     target = int(input("target: "))
 
     if undirected_graph.is_edge(origin, target) == 0:
-        raise EdgeDoesNotExistsError()
+        raise EdgeDoesNotExistError()
 
     new_cost = int(input("new cost: "))
     undirected_graph.set_edge_cost(origin, target, new_cost)
@@ -86,7 +86,7 @@ def remove_edge(undirected_graph):
     target = int(input("target: "))
 
     if undirected_graph.is_edge(origin, target) == 0:
-        raise EdgeDoesNotExistsError()
+        raise EdgeDoesNotExistError()
 
     undirected_graph.remove_edge(origin, target)
 
@@ -109,7 +109,7 @@ def add_vertex(undirected_graph):
     vertex = int(input("new vertex: "))
 
     if undirected_graph.is_vertex(vertex):
-        raise VertexAlreadyExistsError()
+        raise VertexAlreadyExistError()
 
     undirected_graph.add_vertex(vertex)
 
@@ -118,7 +118,7 @@ def get_degree(undirected_graph):
     vertex = int(input("vertex: "))
 
     if undirected_graph.is_vertex(vertex) == False:
-        raise VertexDoesNotExistsError()
+        raise VertexDoesNotExistError()
 
     print(undirected_graph.get_degree(vertex))
 
@@ -127,7 +127,7 @@ def remove_vertex(undirected_graph):
     vertex = int(input("vertex: "))
 
     if undirected_graph.is_vertex(vertex) == 0:
-        raise VertexDoesNotExistsError()
+        raise VertexDoesNotExistError()
 
     undirected_graph.remove_vertex(vertex)
 
@@ -154,7 +154,7 @@ def parse_edges(undirected_graph):
     vertex = int(input("vertex: "))
 
     if undirected_graph.is_vertex(vertex) == False:
-        raise VertexDoesNotExistsError()
+        raise VertexDoesNotExistError()
 
     for neighbor in undirected_graph.parse_edges(vertex):
         print(neighbor)
@@ -236,8 +236,8 @@ def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_gr
             if isolated_node and new_undirected_graph.is_vertex(node) == 0:
                 new_undirected_graph.add_vertex(node)
 
+        print("Connected Component:")
         new_undirected_graph.print_graph()
-
         print()
 
 
@@ -317,13 +317,13 @@ def main():
 
         except Exception as error:
             print(error)
-        except VertexDoesNotExistsError as error:
+        except VertexDoesNotExistError as error:
             print(error)
-        except VertexAlreadyExistsError as error:
+        except VertexAlreadyExistError as error:
             print(error)
-        except EdgeDoesNotExistsError as error:
+        except EdgeDoesNotExistError as error:
             print(error)
-        except EdgeAlreadyExistsError as error:
+        except EdgeAlreadyExistError as error:
             print(error)
         except InvalidNumberOfVerticesError as error:
             print(error)

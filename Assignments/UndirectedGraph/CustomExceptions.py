@@ -1,19 +1,19 @@
-class EdgeAlreadyExistsError(BaseException):
+class EdgeAlreadyExistError(BaseException):
     def __init__(self):
         print("[!] Edge already exists")
 
 
-class EdgeDoesNotExistsError(BaseException):
+class EdgeDoesNotExistError(BaseException):
     def __init__(self):
         print("[!] Edge does not exists")
 
 
-class VertexAlreadyExistsError(BaseException):
+class VertexAlreadyExistError(BaseException):
     def __init__(self):
         print("[!] Vertex already exists")
 
 
-class VertexDoesNotExistsError(BaseException):
+class VertexDoesNotExistError(BaseException):
     def __init__(self):
         print("[!] Vertex does not exists")
 

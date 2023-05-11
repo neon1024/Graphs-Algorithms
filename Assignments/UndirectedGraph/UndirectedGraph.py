@@ -1,4 +1,4 @@
-from Assignments.A2.CustomExceptions import EdgeDoesNotExistsError, EdgeAlreadyExistsError, VertexAlreadyExistsError, VertexDoesNotExistsError, NodesMustBeDifferentError
+from Assignments.UndirectedGraph.CustomExceptions import EdgeDoesNotExistError, EdgeAlreadyExistError, VertexAlreadyExistError, VertexDoesNotExistError, NodesMustBeDifferentError
 
 
 class UndirectedGraph:
@@ -25,14 +25,14 @@ class UndirectedGraph:
         if self.is_edge(origin, target):
             return self.__costs[(origin, target)]
         else:
-            raise EdgeDoesNotExistsError()
+            raise EdgeDoesNotExistError()
 
     def set_edge_cost(self, origin, target, new_cost):
         if self.is_edge(origin, target):
             self.__costs[(origin, target)] = new_cost
             self.__costs[(target, origin)] = new_cost
         else:
-            raise EdgeDoesNotExistsError()
+            raise EdgeDoesNotExistError()
 
     def is_edge(self, origin, target):
         return (origin, target) in self.__costs.keys() and (target, origin) in self.__costs.keys()
@@ -43,7 +43,7 @@ class UndirectedGraph:
             raise NodesMustBeDifferentError()
 
         if self.is_edge(origin, target):
-            raise EdgeAlreadyExistsError()
+            raise EdgeAlreadyExistError()
 
         if self.is_vertex(origin) == 0:
             self.add_vertex(origin)
@@ -60,7 +60,7 @@ class UndirectedGraph:
     def remove_edge(self, origin, target):
         # TODO: return True on success, False otherwise
         if self.is_edge(origin, target) == 0:
-            raise EdgeDoesNotExistsError()
+            raise EdgeDoesNotExistError()
 
         self.__neighbors[origin].remove(target)
         self.__neighbors[target].remove(origin)
@@ -73,7 +73,7 @@ class UndirectedGraph:
     def add_vertex(self, vertex):
         # TODO: return True on success, False otherwise
         if vertex in self.__neighbors.keys():
-            raise VertexAlreadyExistsError()
+            raise VertexAlreadyExistError()
 
         self.__neighbors[vertex] = []
         self.__number_of_vertices += 1
@@ -81,7 +81,7 @@ class UndirectedGraph:
     def remove_vertex(self, vertex):
         # TODO: return True on success, False otherwise
         if self.is_vertex(vertex) == 0:
-            raise VertexDoesNotExistsError()
+            raise VertexDoesNotExistError()
 
         while len(self.__neighbors[vertex]) != 0:
             self.remove_edge(vertex, self.__neighbors[vertex][0])

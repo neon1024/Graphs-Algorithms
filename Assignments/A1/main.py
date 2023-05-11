@@ -1,9 +1,9 @@
 import copy
 import random
 
-from Assignments.A1.domain.CustomExceptions import InvalidNumberOfVerticesError, InvalidNumberOfEdgesError, EdgeAlreadyExistError, EdgeDoesNotExistError, VertexAlreadyExistError, \
+from Assignments.DirectedGraph.CustomExceptions import InvalidNumberOfVerticesError, InvalidNumberOfEdgesError, EdgeAlreadyExistError, EdgeDoesNotExistError, VertexAlreadyExistError, \
     VertexDoesNotExistError
-from domain.DirectedGraph import DirectedGraph
+from Assignments.DirectedGraph.DirectedGraph import DirectedGraph
 
 
 def read_directed_graph_from_file_first_convention(file_name: str):
