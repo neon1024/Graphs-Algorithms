@@ -1,8 +1,8 @@
 import copy
 import random
 
-from Assignments.A1.domain.CustomExceptions import InvalidNumberOfVerticesError, InvalidNumberOfEdgesError, EdgeAlreadyExistsError, EdgeDoesNotExistsError, VertexAlreadyExistsError, \
-    VertexDoesNotExistsError
+from Assignments.A1.domain.CustomExceptions import InvalidNumberOfVerticesError, InvalidNumberOfEdgesError, EdgeAlreadyExistError, EdgeDoesNotExistError, VertexAlreadyExistError, \
+    VertexDoesNotExistError
 from domain.DirectedGraph import DirectedGraph
 
 
@@ -151,7 +151,7 @@ def add_edge(directed_graph):
     target = int(input("target: "))
 
     if directed_graph.is_edge(origin, target):
-        raise EdgeAlreadyExistsError()
+        raise EdgeAlreadyExistError()
     else:
         cost = int(input("cost: "))
 
@@ -163,7 +163,7 @@ def get_edge_cost(directed_graph):
     target = int(input("target: "))
 
     if directed_graph.is_edge(origin, target) == False:
-        raise EdgeDoesNotExistsError()
+        raise EdgeDoesNotExistError()
     else:
         print(directed_graph.get_edge_cost(origin, target))
 
@@ -176,7 +176,7 @@ def modify_edge(directed_graph):
         new_cost = int(input("new cost: "))
         directed_graph.set_edge_cost(origin, target, new_cost)
     else:
-        raise EdgeDoesNotExistsError()
+        raise EdgeDoesNotExistError()
 
 
 def remove_edge(directed_graph):
@@ -184,7 +184,7 @@ def remove_edge(directed_graph):
     target = int(input("target: "))
 
     if directed_graph.is_edge(origin, target) == False:
-        raise EdgeDoesNotExistsError()
+        raise EdgeDoesNotExistError()
     else:
         directed_graph.remove_edge(origin, target)
 
@@ -207,7 +207,7 @@ def add_vertex(directed_graph):
     vertex = int(input("new vertex: "))
 
     if directed_graph.is_vertex(vertex):
-        raise VertexAlreadyExistsError()
+        raise VertexAlreadyExistError()
     else:
         directed_graph.add_vertex(vertex)
 
@@ -216,7 +216,7 @@ def get_in_degree(directed_graph):
     vertex = int(input("vertex: "))
 
     if directed_graph.is_vertex(vertex) == False:
-        raise VertexDoesNotExistsError()
+        raise VertexDoesNotExistError()
     else:
         print(directed_graph.get_in_degree(vertex))
 
@@ -225,7 +225,7 @@ def get_out_degree(directed_graph):
     vertex = int(input("vertex: "))
 
     if directed_graph.is_vertex(vertex) == False:
-        raise VertexDoesNotExistsError()
+        raise VertexDoesNotExistError()
     else:
         print(directed_graph.get_out_degree(vertex))
 
@@ -234,7 +234,7 @@ def remove_vertex(directed_graph):
     vertex = int(input("vertex: "))
 
     if directed_graph.is_vertex(vertex) == False:
-        raise VertexDoesNotExistsError()
+        raise VertexDoesNotExistError()
     else:
         directed_graph.remove_vertex(vertex)
 
@@ -261,7 +261,7 @@ def parse_inbound_edges(directed_graph):
     vertex = int(input("vertex: "))
 
     if directed_graph.is_vertex(vertex) == False:
-        raise VertexDoesNotExistsError()
+        raise VertexDoesNotExistError()
     else:
         for origin in directed_graph.parse_inbound_edges(vertex):
             print(origin)
@@ -271,7 +271,7 @@ def parse_outbound_edges(directed_graph):
     vertex = int(input("vertex: "))
 
     if directed_graph.is_vertex(vertex) == False:
-        raise VertexDoesNotExistsError()
+        raise VertexDoesNotExistError()
     else:
         for target in directed_graph.parse_outbound_edges(vertex):
             print(target)
@@ -342,13 +342,13 @@ def main():
 
         except Exception as error:
             print(error)
-        except VertexDoesNotExistsError as error:
+        except VertexDoesNotExistError as error:
             print(error)
-        except VertexAlreadyExistsError as error:
+        except VertexAlreadyExistError as error:
             print(error)
-        except EdgeDoesNotExistsError as error:
+        except EdgeDoesNotExistError as error:
             print(error)
-        except EdgeAlreadyExistsError as error:
+        except EdgeAlreadyExistError as error:
             print(error)
         except InvalidNumberOfVerticesError as error:
             print(error)
