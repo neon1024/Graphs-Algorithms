@@ -40,10 +40,10 @@ class DirectedGraph:
         self.__costs[(origin, target)] = new_cost
 
     def is_edge(self, origin, target):
-        return target in self.__successors[origin] and origin in self.__predecessors[target] and (origin, target) in self.__costs.keys()
+        return target in self.__successors[origin] and origin in self.__predecessors[target]
 
     def add_edge(self, origin, target, cost):
-        if not self.is_edge(origin, target) == 0:
+        if self.is_edge(origin, target):
             raise EdgeAlreadyExistError()
 
         self.__successors[origin].append(target)
