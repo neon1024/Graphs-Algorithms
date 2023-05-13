@@ -78,6 +78,20 @@ def there_are_negative_cost_cycles_in(graph, origin):
     return False
 
 
+def find_minimum_cost_walk_between_2_nodes_in(origin_node, target_node, directed_graph):
+    minimum_cost_walk_matrix = [[float('inf') for _ in range(directed_graph.get_number_of_vertices())] for _ in range(directed_graph.get_number_of_vertices())]
+
+    for node in directed_graph.parse_vertices():
+        minimum_cost_walk_matrix[node][node] = 0
+
+    for start in directed_graph.parse_vertices():
+        for end in directed_graph.parse_outbound_edges(start):
+            minimum_cost_walk_matrix[start][end] = directed_graph.get_edge_cost(start, end)
+
+    for line in minimum_cost_walk_matrix:
+        print(line)
+
+
 def main():
     # read the graph
     input_file_name = input("input file name: ")
@@ -90,11 +104,13 @@ def main():
     origin_node, target_node = get_origin_and_target_node_from_console(directed_graph)
 
     # check if there are negative cost cycles between the 2 nodes
-    if there_are_negative_cost_cycles_in(directed_graph, origin_node):
-        print("[!] there are negative cost cycles in the graph")
-        exit(1)
+    # if there_are_negative_cost_cycles_in(directed_graph, origin_node):
+        # print("[!] there are negative cost cycles in the graph")
+        # exit(1)
 
     # TODO find one lowest cost walk between the given 2 nodes (matrix multiplication)
+    find_minimum_cost_walk_between_2_nodes_in(origin_node, target_node, directed_graph)
+
     # TODO display the minimum cost walk between the 2 nodes and its cost
     # TODO display the intermediate matrices
     # TODO test it on 3 small graphs (< 20 nodes) and draw the graphs
