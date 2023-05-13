@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from Assignments.DirectedGraph.DirectedGraph import DirectedGraph
 
 
@@ -78,18 +80,62 @@ def there_are_negative_cost_cycles_in(graph, origin):
     return False
 
 
-def find_minimum_cost_walk_between_2_nodes_in(origin_node, target_node, directed_graph):
-    minimum_cost_walk_matrix = [[float('inf') for _ in range(directed_graph.get_number_of_vertices())] for _ in range(directed_graph.get_number_of_vertices())]
+def find_minimum_cost_walk_between_2_nodes_in(origin, target, directed_graph):
+    minimum_cost_walks_matrix = [[float('inf') for _ in range(directed_graph.get_number_of_vertices())] for _ in range(directed_graph.get_number_of_vertices())]
 
     for node in directed_graph.parse_vertices():
-        minimum_cost_walk_matrix[node][node] = 0
+        minimum_cost_walks_matrix[node][node] = 0
 
     for start in directed_graph.parse_vertices():
         for end in directed_graph.parse_outbound_edges(start):
-            minimum_cost_walk_matrix[start][end] = directed_graph.get_edge_cost(start, end)
+            minimum_cost_walks_matrix[start][end] = directed_graph.get_edge_cost(start, end)
 
-    for line in minimum_cost_walk_matrix:
+    # TODO list of nodes that form the minimum cost walk between origin and target
+    traversed_nodes_from_origin_to_path = []
+
+    new_minimum_cost_walks_matrix = deepcopy(minimum_cost_walks_matrix)
+
+    changed = True
+
+    while changed:
+        changed = False
+
+        for i in range(directed_graph.get_number_of_vertices()):
+            for j in range(directed_graph.get_number_of_vertices()):
+                minimum_cost_walk = minimum_cost_walks_matrix[i][j]
+
+                for k in range(directed_graph.get_number_of_vertices()):
+                    if minimum_cost_walks_matrix[i][k] + minimum_cost_walks_matrix[k][j] < minimum_cost_walk:
+                        minimum_cost_walk = minimum_cost_walks_matrix[i][k] + minimum_cost_walks_matrix[k][j]
+                        changed = True
+
+                        if i == origin and j == target:
+                            traversed_nodes_from_origin_to_path.append(k)
+
+                if changed:
+                    new_minimum_cost_walks_matrix[i][j] = minimum_cost_walk
+
+        minimum_cost_walks_matrix = deepcopy(new_minimum_cost_walks_matrix)
+
+        # check for negative cost cycles
+        for i in range(directed_graph.get_number_of_vertices()):
+            if minimum_cost_walks_matrix[i][i] < 0:
+                print("[!] negative cost cycle detected")
+                print("[!] shutting down...")
+                exit(1)
+
+    print("[!] the final minimum cost walks matrix:")
+    for line in minimum_cost_walks_matrix:
         print(line)
+
+    if minimum_cost_walks_matrix[origin][target] == float("inf"):
+        print(f"[!] there is no walk from {origin} to {target}")
+    else:
+        print(f"[!] the cost of the minimum cost walk from {origin} to {target} is: {minimum_cost_walks_matrix[origin][target]}")
+
+        minimum_cost_walk_between_origin_and_target = [origin] + traversed_nodes_from_origin_to_path + [target]
+
+        print(f"[!] the minimum cost walk is: {minimum_cost_walk_between_origin_and_target}")
 
 
 def main():
