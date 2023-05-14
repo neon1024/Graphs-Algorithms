@@ -133,6 +133,12 @@ def find_minimum_cost_path_between_2_nodes_in(origin, target, directed_graph):
                 print("[!] shutting down...")
                 exit(1)
 
+    # display the final matrix's
+    print("the final matrix is:")
+    for line in minimum_cost_paths_matrix:
+        print(line)
+    print()
+
     if minimum_cost_paths_matrix[origin][target] == float("inf"):
         print(f"[!] there is no path from {origin} to {target}")
     else:
