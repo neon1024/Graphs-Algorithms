@@ -80,62 +80,68 @@ def there_are_negative_cost_cycles_in(graph, origin):
     return False
 
 
-def find_minimum_cost_walk_between_2_nodes_in(origin, target, directed_graph):
-    minimum_cost_walks_matrix = [[float('inf') for _ in range(directed_graph.get_number_of_vertices())] for _ in range(directed_graph.get_number_of_vertices())]
+def find_minimum_cost_path_between_2_nodes_in(origin, target, directed_graph):
+    # initialize the minimum cost paths matrix, first all entries are inf
+    minimum_cost_paths_matrix = [[float('inf') for _ in range(directed_graph.get_number_of_vertices())] for _ in range(directed_graph.get_number_of_vertices())]
 
+    # the distance from every node to itself is 0
     for node in directed_graph.parse_vertices():
-        minimum_cost_walks_matrix[node][node] = 0
+        minimum_cost_paths_matrix[node][node] = 0
 
+    # if there is a single edge between a starting node and an ending node, then the entry is the cost of that edge
     for start in directed_graph.parse_vertices():
         for end in directed_graph.parse_outbound_edges(start):
-            minimum_cost_walks_matrix[start][end] = directed_graph.get_edge_cost(start, end)
+            minimum_cost_paths_matrix[start][end] = directed_graph.get_edge_cost(start, end)
 
-    # TODO list of nodes that form the minimum cost walk between origin and target
-    traversed_nodes_from_origin_to_path = []
+    # list of nodes that form the minimum cost walk between origin and target
+    traversed_nodes_from_origin_to_target = []
 
-    new_minimum_cost_walks_matrix = deepcopy(minimum_cost_walks_matrix)
+    new_minimum_cost_paths_matrix = deepcopy(minimum_cost_paths_matrix)
 
     changed = True
 
     while changed:
         changed = False
 
+        # display the intermediate matrix's
+        for line in minimum_cost_paths_matrix:
+            print(line)
+        print()
+
         for i in range(directed_graph.get_number_of_vertices()):
             for j in range(directed_graph.get_number_of_vertices()):
-                minimum_cost_walk = minimum_cost_walks_matrix[i][j]
+                # find the new minimum cost path from i to j
+                minimum_cost_path = minimum_cost_paths_matrix[i][j]
 
                 for k in range(directed_graph.get_number_of_vertices()):
-                    if minimum_cost_walks_matrix[i][k] + minimum_cost_walks_matrix[k][j] < minimum_cost_walk:
-                        minimum_cost_walk = minimum_cost_walks_matrix[i][k] + minimum_cost_walks_matrix[k][j]
+                    if minimum_cost_paths_matrix[i][k] + minimum_cost_paths_matrix[k][j] < minimum_cost_path:
+                        minimum_cost_path = minimum_cost_paths_matrix[i][k] + minimum_cost_paths_matrix[k][j]
                         changed = True
 
+                        # add the node k to the walk
                         if i == origin and j == target:
-                            traversed_nodes_from_origin_to_path.append(k)
+                            traversed_nodes_from_origin_to_target.append(k)
 
-                if changed:
-                    new_minimum_cost_walks_matrix[i][j] = minimum_cost_walk
+                new_minimum_cost_paths_matrix[i][j] = minimum_cost_path
 
-        minimum_cost_walks_matrix = deepcopy(new_minimum_cost_walks_matrix)
+        minimum_cost_paths_matrix = deepcopy(new_minimum_cost_paths_matrix)
 
         # check for negative cost cycles
         for i in range(directed_graph.get_number_of_vertices()):
-            if minimum_cost_walks_matrix[i][i] < 0:
+            if minimum_cost_paths_matrix[i][i] < 0:
                 print("[!] negative cost cycle detected")
                 print("[!] shutting down...")
                 exit(1)
 
-    print("[!] the final minimum cost walks matrix:")
-    for line in minimum_cost_walks_matrix:
-        print(line)
-
-    if minimum_cost_walks_matrix[origin][target] == float("inf"):
-        print(f"[!] there is no walk from {origin} to {target}")
+    if minimum_cost_paths_matrix[origin][target] == float("inf"):
+        print(f"[!] there is no path from {origin} to {target}")
     else:
-        print(f"[!] the cost of the minimum cost walk from {origin} to {target} is: {minimum_cost_walks_matrix[origin][target]}")
+        # display the minimum cost walk between the 2 nodes and its cost
+        print(f"the cost of the minimum cost path from {origin} to {target} is: {minimum_cost_paths_matrix[origin][target]}")
 
-        minimum_cost_walk_between_origin_and_target = [origin] + traversed_nodes_from_origin_to_path + [target]
+        minimum_cost_path_between_origin_and_target = [origin] + traversed_nodes_from_origin_to_target + [target]
 
-        print(f"[!] the minimum cost walk is: {minimum_cost_walk_between_origin_and_target}")
+        print(f"the minimum cost path from {origin} to {target} is: {minimum_cost_path_between_origin_and_target}")
 
 
 def main():
@@ -149,20 +155,12 @@ def main():
     # read the 2 nodes
     origin_node, target_node = get_origin_and_target_node_from_console(directed_graph)
 
-    # check if there are negative cost cycles between the 2 nodes
-    # if there_are_negative_cost_cycles_in(directed_graph, origin_node):
-        # print("[!] there are negative cost cycles in the graph")
-        # exit(1)
+    # find one lowest cost walk between the given 2 nodes (matrix multiplication)
+    find_minimum_cost_path_between_2_nodes_in(origin_node, target_node, directed_graph)
 
-    # TODO find one lowest cost walk between the given 2 nodes (matrix multiplication)
-    find_minimum_cost_walk_between_2_nodes_in(origin_node, target_node, directed_graph)
-
-    # TODO display the minimum cost walk between the 2 nodes and its cost
-    # TODO display the intermediate matrices
-    # TODO test it on 3 small graphs (< 20 nodes) and draw the graphs
+    # TODO https://csacademy.com/app/graph_editor/
     # TODO 1 manual execution of a correct path (5 nodes and 10 edges)
     # TODO 1 manual execution of a negative cost cycle (5 nodes and 10 edges)
-    # TODO 1 file containing a correct path and its cost + draw the graph + intermediate matrices (5 nodes and 10 edges)
     pass
 
 
