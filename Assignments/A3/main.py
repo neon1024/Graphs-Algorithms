@@ -58,28 +58,6 @@ def get_origin_and_target_node_from_console(graph):
             return origin_node, target_node
 
 
-def there_are_negative_cost_cycles_in(graph, origin):
-    # Bellman-Ford algorithm to detect negative cost cycles in a graph with costs
-    distance_from_origin_to = [float('inf') for _ in range(graph.get_number_of_edges())]
-    distance_from_origin_to[origin] = 0
-
-    for start in graph.parse_vertices():
-        for end in graph.parse_outbound_edges(start):
-            edge_cost = graph.get_edge_cost(start, end)
-
-            if distance_from_origin_to[start] != float('inf') and distance_from_origin_to[start] + edge_cost < distance_from_origin_to[end]:
-                distance_from_origin_to[end] = distance_from_origin_to[start] + edge_cost
-
-    for start in graph.parse_vertices():
-        for end in graph.parse_outbound_edges(start):
-            edge_cost = graph.get_edge_cost(start, end)
-
-            if distance_from_origin_to[start] != float('inf') and distance_from_origin_to[start] + edge_cost < distance_from_origin_to[end]:
-                return True
-
-    return False
-
-
 def find_minimum_cost_path_between_2_nodes_in(origin, target, directed_graph):
     # initialize the minimum cost paths matrix, first all entries are inf
     minimum_cost_paths_matrix = [[float('inf') for _ in range(directed_graph.get_number_of_vertices())] for _ in range(directed_graph.get_number_of_vertices())]
@@ -151,6 +129,8 @@ def find_minimum_cost_path_between_2_nodes_in(origin, target, directed_graph):
 
 
 def main():
+    # TODO https://csacademy.com/app/graph_editor/
+
     # read the graph
     input_file_name = input("input file name: ")
 
@@ -163,11 +143,6 @@ def main():
 
     # find one lowest cost walk between the given 2 nodes (matrix multiplication)
     find_minimum_cost_path_between_2_nodes_in(origin_node, target_node, directed_graph)
-
-    # TODO https://csacademy.com/app/graph_editor/
-    # TODO 1 manual execution of a correct path (5 nodes and 10 edges)
-    # TODO 1 manual execution of a negative cost cycle (5 nodes and 10 edges)
-    pass
 
 
 if __name__ == "__main__":
