@@ -170,28 +170,18 @@ def exit_program(undirected_graph):
     exit()
 
 
-def DFS(undirected_graph, root, visited_nodes, components, costs):
+def DFS(undirected_graph, root, visited_nodes, components):
     # for each neighbor of the given root that is not yet visited we perform a DFS
     for neighbor in undirected_graph.parse_edges(root):
         if neighbor not in visited_nodes:
             # mark the node as visited
             visited_nodes.append(neighbor)
 
-            # add the node as a neighbor of the root in the new graph
-            components[root].append(neighbor)
-
-            # also add the root as a neighbor of the node in the new graph
-            components[neighbor] = [root]
-
-            # get the edge cost from the original graph
-            edge_cost = undirected_graph.get_edge_cost(root, neighbor)
-
-            # store the edge cost
-            costs[(root, neighbor)] = edge_cost
-            costs[(neighbor, root)] = edge_cost
+            # append the node to the list of nodes that form the connected component
+            components.append(neighbor)
 
             # perform the DFS on the neighbor of the root
-            DFS(undirected_graph, neighbor, visited_nodes, components, costs)
+            DFS(undirected_graph, neighbor, visited_nodes, components)
 
             print(f"{neighbor} -> ", end="")
 
@@ -199,7 +189,6 @@ def DFS(undirected_graph, root, visited_nodes, components, costs):
 def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_graph):
     visited_nodes = []  # store the visited nodes
     graphs = []  # store the connected components as graphs
-    costs = {}  # store the edge costs of all edges
 
     # traverse each node of the graph that is not yet visited and pass it as the root to the DFS function
     for root in undirected_graph.parse_vertices():
@@ -207,11 +196,11 @@ def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_gr
             # mark the root as visited
             visited_nodes.append(root)
 
-            # a dictionary of node: [neighbors] representing a new graph based on a connected component
-            components = {root: []}
+            # a list of nodes that form a connected component
+            components = [root]
 
             # perform the DFS on the chosen node
-            DFS(undirected_graph, root, visited_nodes, components, costs)
+            DFS(undirected_graph, root, visited_nodes, components)
 
             # store the information about the connected component as a dictionary
             graphs.append(components)
@@ -225,20 +214,24 @@ def find_the_connected_components_of_an_undirected_graph_using_DFS(undirected_gr
     for graph in graphs:
         new_undirected_graph = UndirectedGraph(0)
 
-        for node in graph.keys():
+        for node in graph:
             isolated_node = True
 
-            for neighbor in graph[node]:
-                if new_undirected_graph.is_edge(node, neighbor) == 0:
-                    new_undirected_graph.add_edge(node, neighbor, costs[(node, neighbor)])
+            for neighbor in undirected_graph.parse_vertices():
+                if undirected_graph.is_edge(node, neighbor) and not new_undirected_graph.is_edge(node, neighbor):
+                    new_undirected_graph.add_edge(node, neighbor, undirected_graph.get_edge_cost(node, neighbor))
                     isolated_node = False
 
             if isolated_node and new_undirected_graph.is_vertex(node) == 0:
                 new_undirected_graph.add_vertex(node)
 
+        graphs.append(new_undirected_graph)
+
         print("Connected Component:")
         new_undirected_graph.print_graph()
         print()
+
+    return graphs
 
 
 def print_menu_options():
