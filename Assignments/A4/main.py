@@ -91,6 +91,31 @@ def solve(graph: DirectedGraph):
     return topological_sorted_nodes[::-1]
 
 
+def get_maximum_cost_path_between_origin_and_target_in_directed_graph_from_topological_order(origin, target, digraph: DirectedGraph, topological_sorted_nodes):
+    distance_from_origin_to = []
+
+    for _ in range(len(topological_sorted_nodes)):
+        distance_from_origin_to.append(float("-inf"))
+
+    distance_from_origin_to[origin] = 0
+
+    print(distance_from_origin_to)
+
+    for node in topological_sorted_nodes:
+        if node == target:
+            break
+
+        for neighbor in digraph.parse_outbound_edges(node):
+            cost = digraph.get_edge_cost(node, neighbor)
+
+            if distance_from_origin_to[neighbor] < distance_from_origin_to[node] + cost:
+                distance_from_origin_to[neighbor] = distance_from_origin_to[node] + cost
+
+    print(distance_from_origin_to)
+
+    return distance_from_origin_to[target]
+
+
 def main():
     # problem #4
     # given a digraph with costs:
@@ -111,6 +136,12 @@ def main():
         print("[!] not a DAG")
     else:
         print(topological_sorted_nodes)
+
+        origin, target = get_origin_and_target_node_from_console(digraph)
+
+        cost_of_maximum_cost_path_between_origin_and_target = get_maximum_cost_path_between_origin_and_target_in_directed_graph_from_topological_order(origin, target, digraph, topological_sorted_nodes)
+
+        print(f"cost of the maximum cost path between {origin} and {target}: {cost_of_maximum_cost_path_between_origin_and_target}")
 
 
 if __name__ == "__main__":
