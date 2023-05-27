@@ -117,13 +117,6 @@ def get_maximum_cost_path_between_origin_and_target_in_directed_graph_from_topol
 
 
 def main():
-    # problem #4
-    # given a digraph with costs:
-    #   verify if the digraph is a DAG and perform a topological sort
-    #   of the activities using the algorithm based on depth-first
-    #   traversal (Tarjan) and find a highest cost path between 2
-    #   vertices in O(m+n)
-
     input_file_name = input("input file name: ")
 
     digraph = read_directed_graph_from_file_first_convention(input_file_name)
@@ -135,6 +128,7 @@ def main():
     if not topological_sorted_nodes:
         print("[!] not a DAG")
     else:
+        print("possible topological sort:")
         print(topological_sorted_nodes)
 
         origin, target = get_origin_and_target_node_from_console(digraph)
