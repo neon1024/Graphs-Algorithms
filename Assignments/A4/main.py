@@ -99,8 +99,6 @@ def get_maximum_cost_path_between_origin_and_target_in_directed_graph_from_topol
 
     distance_from_origin_to[origin] = 0
 
-    print(distance_from_origin_to)
-
     for node in topological_sorted_nodes:
         if node == target:
             break
@@ -111,6 +109,7 @@ def get_maximum_cost_path_between_origin_and_target_in_directed_graph_from_topol
             if distance_from_origin_to[neighbor] < distance_from_origin_to[node] + cost:
                 distance_from_origin_to[neighbor] = distance_from_origin_to[node] + cost
 
+    print("costs:")
     print(distance_from_origin_to)
 
     return distance_from_origin_to[target]
