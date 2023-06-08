@@ -115,12 +115,66 @@ def get_maximum_cost_path_between_origin_and_target_in_directed_graph_from_topol
     return distance_from_origin_to[target]
 
 
+def BFS(digraph: DirectedGraph):
+    visited_nodes = []
+    nodes_in_queue = []
+
+    # choose a starting node
+    for starting_node in digraph.parse_vertices():
+        # visit the node
+        if starting_node not in visited_nodes:
+            visited_nodes.append(starting_node)
+            nodes_in_queue.append(starting_node)
+
+            print(f"starting node: {starting_node}")
+
+            while nodes_in_queue:
+                # get the first node in queue
+                current_node = nodes_in_queue.pop(0)
+
+                print(f"exploring node: {current_node}")
+
+                # put all its neighbors into the queue
+                for neighbor_node in digraph.parse_outbound_edges(current_node):
+                    if neighbor_node not in visited_nodes:
+                        visited_nodes.append(neighbor_node)
+                        nodes_in_queue.append(neighbor_node)
+
+                        print(f"visiting node: {neighbor_node}")
+
+    print(f"order of traversal: {visited_nodes}")
+
+    return visited_nodes
+
+
+def DFS(digraph: DirectedGraph):
+
+    pass
+
+
+def menu(digraph: DirectedGraph):
+    options = {
+        "1": BFS,
+        "2": DFS
+    }
+
+    while True:
+        print("1: BFS")
+        print("2: DFS")
+
+        choice = input("> ")
+
+        options[choice](digraph)
+
+
 def main():
     input_file_name = input("input file name: ")
 
     digraph = read_directed_graph_from_file_first_convention(input_file_name)
 
     digraph.print_graph()
+
+    menu(digraph)
 
     topological_sorted_nodes = solve(digraph)
 
