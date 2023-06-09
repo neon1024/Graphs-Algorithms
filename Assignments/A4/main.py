@@ -147,20 +147,65 @@ def BFS(digraph: DirectedGraph):
     return visited_nodes
 
 
-def DFS(digraph: DirectedGraph):
+def DFS_recursive(digraph: DirectedGraph, node, visited: list):
+    visited.append(node)
 
-    pass
+    for neighbor in digraph.parse_outbound_edges(node):
+        if neighbor not in visited:
+            DFS_recursive(digraph, neighbor, visited)
+
+
+def DFS(digraph: DirectedGraph):
+    visited = []
+
+    for node in digraph.parse_vertices():
+        if node not in visited:
+            DFS_recursive(digraph, node, visited)
+
+    print(visited)
+
+
+def Bellman_Ford(graph: DirectedGraph, starting_node=0, target_node=7):
+    distance_from_starting_node_to = []
+
+    for _ in range(graph.get_number_of_vertices()):
+        distance_from_starting_node_to.append(float("inf"))
+
+    distance_from_starting_node_to[starting_node] = 0
+
+    changed = True
+
+    while changed:
+        changed = False
+
+        for node in graph.parse_vertices():
+            for neighbor in graph.parse_outbound_edges(node):
+                edge_cost = graph.get_edge_cost(node, neighbor)
+
+                if distance_from_starting_node_to[node] > distance_from_starting_node_to[neighbor] + edge_cost:
+                    distance_from_starting_node_to[node] = distance_from_starting_node_to[neighbor] + edge_cost
+                    changed = True
+
+                elif distance_from_starting_node_to[neighbor] > distance_from_starting_node_to[node] + edge_cost:
+                    distance_from_starting_node_to[neighbor] = distance_from_starting_node_to[node] + edge_cost
+                    changed = True
+
+    print(distance_from_starting_node_to)
+
+    return distance_from_starting_node_to[target_node]
 
 
 def menu(digraph: DirectedGraph):
     options = {
         "1": BFS,
-        "2": DFS
+        "2": DFS,
+        "3": Bellman_Ford
     }
 
     while True:
         print("1: BFS")
         print("2: DFS")
+        print("3: Bellman-Ford")
 
         choice = input("> ")
 

@@ -71,7 +71,7 @@ def find_minimum_cost_path_between_2_nodes_in(origin, target, directed_graph):
         for end in directed_graph.parse_outbound_edges(start):
             minimum_cost_paths_matrix[start][end] = directed_graph.get_edge_cost(start, end)
 
-    # list of nodes that form the minimum cost walk between origin and target
+    # list of nodes that form the minimum cost path between origin and target
     traversed_nodes_from_origin_to_target = []
 
     new_minimum_cost_paths_matrix = deepcopy(minimum_cost_paths_matrix)
@@ -96,7 +96,7 @@ def find_minimum_cost_path_between_2_nodes_in(origin, target, directed_graph):
                         minimum_cost_path = minimum_cost_paths_matrix[i][k] + minimum_cost_paths_matrix[k][j]
                         changed = True
 
-                        # add the node k to the walk
+                        # add the node k to the path
                         if i == origin and j == target:
                             traversed_nodes_from_origin_to_target.append(k)
 
@@ -111,7 +111,7 @@ def find_minimum_cost_path_between_2_nodes_in(origin, target, directed_graph):
                 print("[!] shutting down...")
                 exit(1)
 
-    # display the final matrix's
+    # display the final matrix
     print("the final matrix is:")
     for line in minimum_cost_paths_matrix:
         print(line)
@@ -120,7 +120,7 @@ def find_minimum_cost_path_between_2_nodes_in(origin, target, directed_graph):
     if minimum_cost_paths_matrix[origin][target] == float("inf"):
         print(f"[!] there is no path from {origin} to {target}")
     else:
-        # display the minimum cost walk between the 2 nodes and its cost
+        # display the minimum cost path between the 2 nodes and its cost
         print(f"the cost of the minimum cost path from {origin} to {target} is: {minimum_cost_paths_matrix[origin][target]}")
 
         minimum_cost_path_between_origin_and_target = [origin] + traversed_nodes_from_origin_to_target + [target]
