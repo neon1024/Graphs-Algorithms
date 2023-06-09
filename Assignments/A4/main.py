@@ -195,17 +195,61 @@ def Bellman_Ford(graph: DirectedGraph, starting_node=0, target_node=7):
     return distance_from_starting_node_to[target_node]
 
 
+def Floyd_Warshall(graph: DirectedGraph, a=0, b=7):
+    distances = [[float('inf') for _ in range(graph.get_number_of_vertices())] for _ in range(graph.get_number_of_vertices())]
+    paths = [[0 for _ in range(graph.get_number_of_vertices())] for _ in range(graph.get_number_of_vertices())]
+
+    for start in graph.parse_vertices():
+        for target in graph.parse_outbound_edges(start):
+            distances[start][target] = graph.get_edge_cost(start, target)
+
+            if start != target:
+                paths[start][target] = start
+
+    for node in graph.parse_vertices():
+        distances[node][node] = 0
+
+    for i in range(graph.get_number_of_vertices()):
+        for j in range(graph.get_number_of_vertices()):
+            for k in range(graph.get_number_of_vertices()):
+                if distances[i][j] > distances[i][k] + distances[k][j]:
+                    distances[i][j] = distances[i][k] + distances[k][j]
+                    paths[i][j] = paths[k][j]
+
+    for line in distances:
+        print(line)
+
+    for line in paths:
+        print(line)
+
+    path = []
+
+    u = b
+
+    path.append(u)
+
+    while u != a:
+        u = paths[a][u]
+        path.append(u)
+
+    print(path[::-1])
+
+    return path[::-1]
+
+
 def menu(digraph: DirectedGraph):
     options = {
         "1": BFS,
         "2": DFS,
-        "3": Bellman_Ford
+        "3": Bellman_Ford,
+        "4": Floyd_Warshall
     }
 
     while True:
         print("1: BFS")
         print("2: DFS")
         print("3: Bellman-Ford")
+        print("4: Floyd-Warshall")
 
         choice = input("> ")
 
